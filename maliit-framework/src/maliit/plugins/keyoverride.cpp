@@ -19,7 +19,8 @@
 
 MKeyOverridePrivate::MKeyOverridePrivate()
     : highlighted(false),
-      enabled(true)
+      enabled(true),
+      drawBackground(false)
 {
 }
 
@@ -30,6 +31,7 @@ void MKeyOverridePrivate::assign(const MKeyOverridePrivate &other)
     icon      = other.icon;
     highlighted  = other.highlighted;
     enabled   = other.enabled;
+    drawBackground = other.drawBackground;
 }
 
 MKeyOverride::MKeyOverride(const QString &keyId)
@@ -96,6 +98,13 @@ bool MKeyOverride::enabled() const
     return d->enabled;
 }
 
+bool MKeyOverride::drawBackground() const
+{
+    Q_D(const MKeyOverride);
+
+    return d->drawBackground;
+}
+
 void MKeyOverride::setLabel(const QString &label)
 {
     Q_D(MKeyOverride);
@@ -140,3 +149,15 @@ void MKeyOverride::setEnabled(bool enabled)
     }
 }
 
+void MKeyOverride::setDrawBackground(bool drawBackground)
+{
+    Q_D(MKeyOverride);
+
+    qWarning("SETTING....");
+    if (d->drawBackground != drawBackground) {
+        qWarning("ANTTI: setDrawBackground %d", drawBackground);
+        d->drawBackground = drawBackground;
+        Q_EMIT drawBackgroundChanged(drawBackground);
+        Q_EMIT keyAttributesChanged(keyId(), DrawBackground);
+    }
+}

@@ -34,6 +34,7 @@ class MKeyOverride : public QObject
     Q_PROPERTY(QString icon   READ icon    WRITE setIcon NOTIFY iconChanged)
     Q_PROPERTY(bool highlighted   READ highlighted WRITE setHighlighted NOTIFY highlightedChanged)
     Q_PROPERTY(bool enabled   READ enabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool drawBackground   READ drawBackground WRITE setDrawBackground NOTIFY drawBackgroundChanged)
 
 public:
     //! Defines all the attributes of an key override.
@@ -42,7 +43,8 @@ public:
         Icon  = 0x2,
         Highlighted = 0x4,
         Enabled = 0x8,
-        All = Label | Icon | Highlighted | Enabled
+        DrawBackground = 0x10,
+        All = Label | Icon | Highlighted | Enabled | DrawBackground
     };
     Q_DECLARE_FLAGS(KeyOverrideAttributes, KeyOverrideAttribute)
 
@@ -83,6 +85,8 @@ public:
     //! Return true if the key is enabled; otherwise return false.
     bool enabled() const;
 
+    bool drawBackground() const;
+
 public Q_SLOTS:
     //! Sets text for the key
     void setLabel(const QString &label);
@@ -101,6 +105,7 @@ public Q_SLOTS:
      *
      */
     void setEnabled(bool enabled);
+    void setDrawBackground(bool drawBackground);
 
 Q_SIGNALS:
     /*!
@@ -140,6 +145,7 @@ Q_SIGNALS:
      * This signal is emitted before keyAttributesChanged signal.
      */
     void enabledChanged(bool enabled);
+    void drawBackgroundChanged(bool drawBackground);
 
 private:
     Q_DECLARE_PRIVATE(MKeyOverride)
