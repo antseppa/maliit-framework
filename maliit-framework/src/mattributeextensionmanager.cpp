@@ -28,6 +28,7 @@ namespace {
     const char * const DomainItemName("_domain");
     const char * const KeysExtensionString("/keys");
     const char * const ToolbarExtensionString("/toolbar");
+    const char * const AttributesExtensionString("/attributes");
     const char * const GlobalExtensionString("/");
 
     const char * const ToolbarIdAttribute = "toolbarId";
@@ -150,6 +151,8 @@ void MAttributeExtensionManager::setExtendedAttribute(const MAttributeExtensionI
                                                       const QString &attribute,
                                                       const QVariant &value)
 {
+    //qWarning("ANTTI: MAttributeExtensionManager::setExtendedAttribute");
+
     if (target == GlobalExtensionString) {
         Q_EMIT globalAttributeChanged(id, targetItem, attribute, value);
         return;
@@ -187,6 +190,13 @@ void MAttributeExtensionManager::setExtendedAttribute(const MAttributeExtensionI
         // Q_EMIT signal to notify the new key override is created.
         if (newKeyOverrideCreated) {
             Q_EMIT keyOverrideCreated();
+        }
+    } else if (target == AttributesExtensionString) {
+        qWarning("**** ANTTI: SETTING ATTRIBUTES EXTENSION....");
+        qWarning("ATTRIBUTE %s", qPrintable(attribute));
+        if (attribute == QStringLiteral("drawBackground")) {
+            qWarning("EMIT VALUE (100)");
+            Q_EMIT inputPanelAttributeChanged(QStringLiteral("drawBackground"), value);
         }
     } else {
         qWarning() << "Invalid or incompatible attribute extension target:" << target;

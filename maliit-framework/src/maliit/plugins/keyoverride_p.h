@@ -34,6 +34,7 @@ public:
     QString icon;
     bool highlighted;
     bool enabled;
+    bool drawBackground;
 };
 
 #endif

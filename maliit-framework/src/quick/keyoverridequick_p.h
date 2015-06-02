@@ -32,6 +32,7 @@ public:
     QString actualIcon;
     bool actualHighlighted;
     bool actualEnabled;
+    bool actualDrawBackground;
 
     QString defaultLabel;
     QString defaultIcon;
@@ -42,6 +43,7 @@ public:
     bool iconIsOverriden;
     bool highlightedIsOverriden;
     bool enabledIsOverriden;
+    bool drawBackgroundIsOverriden;
 };
 
 } // namespace Maliit

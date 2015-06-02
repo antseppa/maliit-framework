@@ -167,6 +167,9 @@ private Q_SLOTS:
                                   const QString &targetItem,
                                   const QString &attribute,
                                   const QVariant &value);
+
+    void onInputPanelAttributChanged(const QString &key, const QVariant &value);
+
 private:
     QSet<MAbstractInputMethod *> targets();
 

@@ -750,6 +750,9 @@ QMap<QString, QVariant> MInputContext::getStateInformation() const
 
     stateInformation["toolbarId"] = 0; // Global extension id. And bad state parameter name for it.
 
+    QVariantMap appExtensions = qGuiApp->property("__inputMethodExtensions").toMap();
+    stateInformation["drawBackground"] = appExtensions.value("inputPanelDrawBackground").toBool();
+
     return stateInformation;
 }
 
@@ -837,4 +840,12 @@ void MInputContext::updateInputMethodExtensions()
 
     value = extensions.value("enterKeyHighlighted");
     imServer->setExtendedAttribute(0, "/keys", "actionKey", "highlighted", value.isValid() ? value.toBool() : false);
+
+    qWarning("MALIIT: qGuiApp: %d", (int)qGuiApp);
+    QVariantMap appExtensions = qGuiApp->property("__inputMethodExtensions").toMap();
+    qWarning("EXTENTS COUNT: %d", appExtensions.count());
+    value = appExtensions.value("inputPanelDrawBackground");
+    qWarning("ANTTI: SET APP EXTENSION: INPUT PANEL DRAW BACKGROUND: %d", value.toBool());
+    //imServer->setExtendedAttribute(0, "/attributes", "inputPanel", "drawBackground", value.isValid() ? value.toBool() : false);
+    imServer->setExtendedAttribute(0, "/attributes", "inputPanel", "drawBackground", value.isValid() ? value.toBool() : false);
 }

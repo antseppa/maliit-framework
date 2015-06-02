@@ -146,6 +146,8 @@ Q_SIGNALS:
                                          const QString &attribute,
                                          const QVariant &value);
 
+    void inputPanelAttributeChanged(const QString &key, const QVariant &value);
+
 private:
     /*!
      * \brief Returns a list of the id for all attribute extensions' ids.

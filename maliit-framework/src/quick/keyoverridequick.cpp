@@ -29,6 +29,7 @@ KeyOverrideQuickPrivate::KeyOverrideQuickPrivate(const QString &label,
       actualIcon(),
       actualHighlighted(false),
       actualEnabled(false),
+      actualDrawBackground(false),
       defaultLabel(label),
       defaultIcon(icon),
       defaultHighlighted(highlighted),
@@ -36,7 +37,8 @@ KeyOverrideQuickPrivate::KeyOverrideQuickPrivate(const QString &label,
       labelIsOverriden(false),
       iconIsOverriden(false),
       highlightedIsOverriden(false),
-      enabledIsOverriden(false)
+      enabledIsOverriden(false),
+      drawBackgroundIsOverriden(false)
 {}
 
 KeyOverrideQuick::KeyOverrideQuick()
@@ -77,6 +79,13 @@ bool KeyOverrideQuick::enabled() const
     Q_D(const KeyOverrideQuick);
 
     return d->actualEnabled;
+}
+
+bool KeyOverrideQuick::drawBackground() const
+{
+    Q_D(const KeyOverrideQuick);
+
+    return d->actualDrawBackground;
 }
 
 QString KeyOverrideQuick::defaultLabel() const
@@ -126,6 +135,11 @@ void KeyOverrideQuick::overrideHighlighted(bool highlighted)
 void KeyOverrideQuick::overrideEnabled(bool enabled)
 {
     setEnabled(enabled, true);
+}
+
+void KeyOverrideQuick::overrideDrawBackground(bool drawBackground)
+{
+    setDrawBackground(drawBackground, true);
 }
 
 void KeyOverrideQuick::setDefaultLabel(const QString &label)
@@ -224,6 +238,17 @@ void KeyOverrideQuick::setEnabled(bool enabled, bool overriden)
     }
 }
 
+void KeyOverrideQuick::setDrawBackground(bool drawBackground, bool overriden)
+{
+    Q_D(KeyOverrideQuick);
+
+    d->drawBackgroundIsOverriden = overriden;
+    if (d->actualDrawBackground != drawBackground) {
+        d->actualDrawBackground = drawBackground;
+        Q_EMIT drawBackgroundChanged(drawBackground);
+    }
+}
+
 void KeyOverrideQuick::useDefaultLabel()
 {
     Q_D(KeyOverrideQuick);
@@ -290,6 +315,11 @@ void KeyOverrideQuick::applyOverride(const QSharedPointer<MKeyOverride>& keyOver
 
         if (changedAttributes & MKeyOverride::Enabled) {
             overrideEnabled(keyOverride->enabled());
+        }
+
+        if (changedAttributes & MKeyOverride::DrawBackground) {
+            qWarning("HERE...");
+            overrideDrawBackground(keyOverride->drawBackground());
         }
     } else {
         // if no key override is passed then we just set defaults.

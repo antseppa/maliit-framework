@@ -37,6 +37,7 @@ class KeyOverrideQuick : public QObject
     Q_PROPERTY(QString icon     READ icon        WRITE overrideIcon        NOTIFY iconChanged)
     Q_PROPERTY(bool highlighted READ highlighted WRITE overrideHighlighted NOTIFY highlightedChanged)
     Q_PROPERTY(bool enabled     READ enabled     WRITE overrideEnabled     NOTIFY enabledChanged)
+    Q_PROPERTY(bool drawBackground READ drawBackground WRITE overrideDrawBackground    NOTIFY drawBackgroundChanged)
 
     // default properties
     Q_PROPERTY(QString defaultLabel    READ defaultLabel       WRITE setDefaultLabel       NOTIFY defaultLabelChanged)
@@ -62,6 +63,8 @@ public:
 
     //! Return true if the key is enabled; otherwise return false.
     bool enabled() const;
+
+    bool drawBackground() const;
 
     //! Returns default text from the key
     QString defaultLabel() const;
@@ -91,6 +94,8 @@ public Q_SLOTS:
 
     //! Override actual enabled.
     void overrideEnabled(bool enabled);
+
+    void overrideDrawBackground(bool drawBackground);
 
     //! Set default text for the key.
     void setDefaultLabel(const QString &label);
@@ -141,6 +146,8 @@ Q_SIGNALS:
     //! Emitted when default enabled is changed.
     void defaultEnabledChanged(bool enabled);
 
+    void drawBackgroundChanged(bool drawBackground);
+
 private:
     //! Sets actual label and marks it as either overriden or default.
     void setLabel(const QString &label, bool overriden);
@@ -153,6 +160,8 @@ private:
 
     //! Sets actual enabled and marks it as either overriden or default.
     void setEnabled(bool enabled, bool overriden);
+
+    void setDrawBackground(bool drawBackground, bool overriden);
 
     Q_DECLARE_PRIVATE(KeyOverrideQuick)
 

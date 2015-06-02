@@ -19,6 +19,7 @@
 
 #include <maliit/plugins/abstractinputmethodhost.h>
 #include <maliit/plugins/keyoverride.h>
+#include <maliit/plugins/updateevent.h>
 
 #include "abstractplatform.h"
 
@@ -84,6 +85,7 @@ public:
     bool m_predictionEnabled;
     bool m_autoCapitalizationEnabled;
     bool m_hiddenText;
+    bool m_drawBackground;
     QSharedPointer<Maliit::AbstractPlatform> m_platform;
 
     InputMethodQuickPrivate(MAbstractInputMethodHost *host,
@@ -107,6 +109,7 @@ public:
         , m_predictionEnabled(true)
         , m_autoCapitalizationEnabled(true)
         , m_hiddenText(false)
+        , m_drawBackground(false)
         , m_platform(platform)
     {
         Q_ASSERT(surface);
@@ -535,6 +538,26 @@ void InputMethodQuick::setKeyOverrides(const QMap<QString, QSharedPointer<MKeyOv
     d->updateActionKey(MKeyOverride::All);
 }
 
+bool InputMethodQuick::imExtensionEvent(MImExtensionEvent *event)
+{
+    Q_D(InputMethodQuick);
+    qWarning("ANTTI: InputMethodQuick::imExtensionEvent");
+
+    if (event->type() == MImExtensionEvent::Update) {
+        MImUpdateEvent *updateEvent = static_cast<MImUpdateEvent*>(event);
+        //QStringList changed  = updateEvent->propertiesChanged();
+        //qWarning() << "Changed: " << changed;
+        bool drawBackground = updateEvent->value("drawBackground").toBool();
+        if (d->m_drawBackground != drawBackground) {
+            d->m_drawBackground = drawBackground;
+            Q_EMIT drawBackgroundChanged();
+            qWarning("INPUT METHOD QUICK: DRAW BACKGROUND: %d", drawBackground);
+        }
+    }
+
+    return false;
+}
+
 QList<MAbstractInputMethod::MInputMethodSubView> InputMethodQuick::subViews(Maliit::HandlerState state) const
 {
     Q_UNUSED(state);
@@ -639,6 +662,12 @@ bool InputMethodQuick::hiddenText()
 {
     Q_D(InputMethodQuick);
     return d->m_hiddenText;
+}
+
+bool InputMethodQuick::drawBackground()
+{
+    Q_D(InputMethodQuick);
+    return d->m_drawBackground;
 }
 
 } // namespace Maliit

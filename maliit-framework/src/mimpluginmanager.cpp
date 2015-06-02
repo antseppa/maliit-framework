@@ -1184,6 +1184,9 @@ MIMPluginManager::MIMPluginManager(const QSharedPointer<MInputContextConnection>
     connect(d->attributeExtensionManager.data(), SIGNAL(globalAttributeChanged(MAttributeExtensionId,QString,QString,QVariant)),
             this, SLOT(onGlobalAttributeChanged(MAttributeExtensionId,QString,QString,QVariant)));
 
+    connect(d->attributeExtensionManager.data(), SIGNAL(inputPanelAttributeChanged(QString,QVariant)),
+            this, SLOT(onInputPanelAttributChanged(QString,QVariant)));
+
     d->paths        = MImSettings(MImPluginPaths).value(QStringList(DefaultPluginLocation)).toStringList();
     d->blacklist    = MImSettings(MImPluginDisabled).value().toStringList();
 
@@ -1571,6 +1574,13 @@ void MIMPluginManager::onGlobalAttributeChanged(const MAttributeExtensionId &id,
 
         setAllSubViewsEnabled(value.toBool());
     }
+}
+
+void MIMPluginManager::onInputPanelAttributChanged(const QString &key, const QVariant &value)
+{
+    Q_UNUSED(key);
+    Q_UNUSED(value);
+    qWarning("THE SLOT FIRED!");
 }
 
 void MIMPluginManager::pluginSettingsRequested(int clientId, const QString &descriptionLanguage)
